@@ -14,6 +14,7 @@ module.exports = {
       watch: true,
     },
     open: true,
+    historyApiFallback: true,
   },
   module: {
     rules: [
