@@ -5,16 +5,21 @@ import Main from "../main/main";
 import Login from "../login/login";
 import Favorites from "../favorites/favorites";
 import Room from "../room/room";
+import placeCardProp from "../place-card/place-card.prop";
+import reviewsProp from "../reviews/reviews.prop";
 
 const App = (props) => {
-  const {placesFound} = props;
+  const {placesFound, offers, comments} = props;
 
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={`/`}
-          element={<Main placesFound={placesFound} />}
+          element={<Main
+            placesFound={placesFound}
+            offers={offers}
+          />}
         />
         <Route
           path={`/login`}
@@ -22,11 +27,16 @@ const App = (props) => {
         />
         <Route
           path={`/favorites`}
-          element={<Favorites />}
+          element={<Favorites
+            offers={offers}
+          />}
         />
         <Route
           path={`/offer/:id`}
-          element={<Room />}
+          element={<Room
+            offer={offers[0]}
+            comments={comments}
+          />}
         />
       </Routes>
     </BrowserRouter>
@@ -35,6 +45,8 @@ const App = (props) => {
 
 App.propTypes = {
   placesFound: PropTypes.number.isRequired,
+  offers: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
+  comments: PropTypes.arrayOf(PropTypes.shape(reviewsProp).isRequired).isRequired,
 };
 
 export default App;
