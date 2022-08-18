@@ -1,40 +1,34 @@
-import React, {PureComponent} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import NearCard from "../near-card/near-card";
+import withActiveCard from "../../hocs/withActiveCard/withActiveCard";
 import placeCardProp from "../place-card/place-card.prop";
 
-class NearPlaces extends PureComponent {
-  constructor(props) {
-    super(props);
+const NearPlaces = (props) => {
 
-    this.state = {
-      activeCard: null,
-    };
-  }
+  const {offers, onHover, onBlur} = props;
 
-  render() {
-    const {offers} = this.props;
-
-    return (
-      <section className="near-places places">
-        <h2 className="near-places__title">Other places in the neighbourhood</h2>
-        <div className="near-places__list places__list">
-          {offers.map((room) => (
-            <NearCard
-              key={room.id}
-              offer={room}
-              onHover={(evt) => this.setState({activeCard: evt.currentTarget.id})}
-              onBlur={() => this.setState({activeCard: null})}
-            />
-          ))}
-        </div>
-      </section>
-    );
-  }
-}
+  return (
+    <section className="near-places places">
+      <h2 className="near-places__title">Other places in the neighbourhood</h2>
+      <div className="near-places__list places__list">
+        {offers.map((room) => (
+          <NearCard
+            key={room.id}
+            offer={room}
+            onHover={onHover}
+            onBlur={onBlur}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
 
 NearPlaces.propTypes = {
+  onHover: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
   offers: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
 };
 
-export default NearPlaces;
+export default withActiveCard(NearPlaces);
