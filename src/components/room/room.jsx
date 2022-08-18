@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import CommentForm from "../comment-form/comment-form";
 import Reviews from "../reviews/reviews";
 import NearPlaces from "../near-places/near-places";
+import Map from "../map/map";
 import placeCardProp from "../place-card/place-card.prop";
 import reviewsProp from "../reviews/reviews.prop";
 
@@ -140,7 +141,9 @@ const Room = (props) => {
               </section>
             </div>
           </div>
-          <section className="property__map map"></section>
+          <section className="property__map map">
+            <Map offers={offers} />
+          </section>
         </section>
         <div className="container">
           <NearPlaces
