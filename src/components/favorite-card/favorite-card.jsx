@@ -1,11 +1,13 @@
 import React from "react";
 import {Link} from 'react-router-dom';
 import PropTypes from "prop-types";
+import placeCardProp from "../place-card/place-card.prop";
+
 
 const premiumMarkTemplate = <div className="place-card__mark"><span>Premium</span></div>;
 
 const FavoriteCard = (props) => {
-  const {offer, onHover} = props;
+  const {offer, onHover, onBlur} = props;
   const {previewImage, price, rating, title, type, isPremium, isFavorite, id} = offer;
 
   const premiumMark = isPremium ? premiumMarkTemplate : ``;
@@ -18,6 +20,7 @@ const FavoriteCard = (props) => {
       id={id}
       className="favorites__card place-card"
       onMouseEnter={onHover}
+      onMouseLeave={onBlur}
     >
       {premiumMark}
       <div className="favorites__image-wrapper place-card__image-wrapper">
@@ -57,40 +60,8 @@ const FavoriteCard = (props) => {
 
 FavoriteCard.propTypes = {
   onHover: PropTypes.func.isRequired,
-  offer: PropTypes.shape({
-    bedrooms: PropTypes.number.isRequired,
-    city: PropTypes.shape({
-      location: PropTypes.shape({
-        latitude: PropTypes.number.isRequired,
-        longitude: PropTypes.number.isRequired,
-        zoom: PropTypes.number.isRequired
-      }).isRequired,
-      name: PropTypes.string.isRequired,
-    }).isRequired,
-    description: PropTypes.string.isRequired,
-    goods: PropTypes.arrayOf(PropTypes.string).isRequired,
-    host: PropTypes.shape({
-      avatarUrl: PropTypes.string.isRequired,
-      id: PropTypes.number.isRequired,
-      isPro: PropTypes.bool.isRequired,
-      name: PropTypes.string.isRequired,
-    }).isRequired,
-    id: PropTypes.number.isRequired,
-    images: PropTypes.arrayOf(PropTypes.string).isRequired,
-    isFavorite: PropTypes.bool.isRequired,
-    isPremium: PropTypes.bool.isRequired,
-    location: PropTypes.shape({
-      latitude: PropTypes.number.isRequired,
-      longitude: PropTypes.number.isRequired,
-      zoom: PropTypes.number.isRequired
-    }).isRequired,
-    maxAdults: PropTypes.number.isRequired,
-    previewImage: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    rating: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-  }).isRequired
+  onBlur: PropTypes.func.isRequired,
+  offer: PropTypes.shape(placeCardProp).isRequired,
 };
 
 export default FavoriteCard;
