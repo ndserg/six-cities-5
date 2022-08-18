@@ -6,7 +6,7 @@ import placeCardProp from "./place-card.prop";
 const premiumMarkTemplate = <div className="place-card__mark"><span>Premium</span></div>;
 
 const PlaceCard = (props) => {
-  const {offer, onHover} = props;
+  const {offer, onHover, onBlur} = props;
   const {previewImage, price, rating, title, type, isPremium, isFavorite, id} = offer;
 
   const premiumMark = isPremium ? premiumMarkTemplate : ``;
@@ -18,7 +18,8 @@ const PlaceCard = (props) => {
     <article
       id={id}
       className="cities__card place-card"
-      onMouseEnter={onHover}
+      onMouseOver={onHover}
+      onMouseLeave={onBlur}
     >
       {premiumMark}
       <div className="cities__image-wrapper place-card__image-wrapper">
@@ -58,6 +59,7 @@ const PlaceCard = (props) => {
 
 PlaceCard.propTypes = {
   onHover: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
   offer: PropTypes.shape(placeCardProp).isRequired,
 };
 
