@@ -2,19 +2,19 @@ import React from "react";
 import PlaceCard from "../place-card/place-card";
 
 const imageStyle = {
-  width: 150,
-  height: 110
+  width: 260,
+  height: 200
 };
 
-const FavoriteCard = (props) => {
+const NearCard = (props) => {
 
   return (
     <PlaceCard
-      classPrefix={`favorites`}
+      classPrefix={`near-places`}
       imgStyle={imageStyle}
       {...props}
     />
   );
 };
 
-export default FavoriteCard;
+export default NearCard;
