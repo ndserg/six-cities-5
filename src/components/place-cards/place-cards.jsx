@@ -23,6 +23,7 @@ class PlaceCards extends PureComponent {
             key={offer.id}
             offer={offers[i]}
             onHover={(evt) => this.setState({activeCard: evt.currentTarget.id})}
+            onBlur={() => this.setState({activeCard: null})}
           />
         ))}
       </div>
