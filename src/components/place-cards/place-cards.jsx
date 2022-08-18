@@ -18,10 +18,10 @@ class PlaceCards extends PureComponent {
 
     return (
       <div className="cities__places-list places__list tabs__content">
-        {offers.map((offer, i) => (
+        {offers.map((offer) => (
           <PlaceCard
             key={offer.id}
-            offer={offers[i]}
+            offer={offer}
             onHover={(evt) => this.setState({activeCard: evt.currentTarget.id})}
             onBlur={() => this.setState({activeCard: null})}
           />

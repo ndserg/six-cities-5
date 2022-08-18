@@ -80,10 +80,10 @@ class Favorites extends PureComponent {
                     </div>
                   </div>
                   <div className="favorites__places">
-                    {offers.map((offer, i) => (
+                    {offers.map((offer) => (
                       <FavoriteCard
                         key={offer.id}
-                        offer={offers[i]}
+                        offer={offer}
                         onHover={(evt) => this.setState({activeCard: evt.currentTarget.id})}
                         onBlur={() => this.setState({activeCard: null})}
                       />
@@ -103,6 +103,7 @@ class Favorites extends PureComponent {
     );
   }
 }
+
 Favorites.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
 };

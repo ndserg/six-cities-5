@@ -6,8 +6,9 @@ import placeCardProp from "./place-card.prop";
 const premiumMarkTemplate = <div className="place-card__mark"><span>Premium</span></div>;
 
 const PlaceCard = (props) => {
-  const {offer, onHover, onBlur} = props;
+  const {classPrefix = ``, imgStyle, offer, onHover, onBlur} = props;
   const {previewImage, price, rating, title, type, isPremium, isFavorite, id} = offer;
+  const {width = 260, height = 200} = imgStyle || {};
 
   const premiumMark = isPremium ? premiumMarkTemplate : ``;
   const isBookmarkedClass = isFavorite ? ` place-card__bookmark-button--active` : ``;
@@ -17,17 +18,17 @@ const PlaceCard = (props) => {
   return (
     <article
       id={id}
-      className="cities__card place-card"
+      className={`${classPrefix || `cities`}__card place-card`}
       onMouseOver={onHover}
       onMouseLeave={onBlur}
     >
       {premiumMark}
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`offer/${id}`}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image" />
+      <div className={`${classPrefix || `cities`}__image-wrapper place-card__image-wrapper`}>
+        <Link to={`/offer/${id}`}>
+          <img className="place-card__image" src={previewImage} width={width} height={height} alt="Place image" />
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className={`${classPrefix && `${classPrefix}__card-info `}place-card__info`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
@@ -47,7 +48,7 @@ const PlaceCard = (props) => {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`offer/${id}`}>
+          <Link to={`/offer/${id}`}>
             {title}
           </Link>
         </h2>
@@ -60,6 +61,8 @@ const PlaceCard = (props) => {
 PlaceCard.propTypes = {
   onHover: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
+  classPrefix: PropTypes.string,
+  imgStyle: PropTypes.shape({width: PropTypes.number, height: PropTypes.number}),
   offer: PropTypes.shape(placeCardProp).isRequired,
 };
 
