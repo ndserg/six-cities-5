@@ -41,7 +41,7 @@ export default [
         longitude: 4.895168,
         zoom: 10
       },
-      name: `Hamburg`
+      name: `Amsterdam`
     },
     description: `An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful`,
     goods: [`Towels`, `Heating`, `Kitchen`, `Cable TV`, `Coffee machine`, `Dishwasher`],
