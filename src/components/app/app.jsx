@@ -9,7 +9,7 @@ import placeCardProp from "../place-card/place-card.prop";
 import reviewsProp from "../reviews/reviews.prop";
 
 const App = (props) => {
-  const {placesFound, offers, comments} = props;
+  const {offers, comments} = props;
 
   return (
     <BrowserRouter>
@@ -17,7 +17,6 @@ const App = (props) => {
         <Route
           path={`/`}
           element={<Main
-            placesFound={placesFound}
             offers={offers}
           />}
         />
@@ -45,7 +44,6 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  placesFound: PropTypes.number.isRequired,
   offers: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
   comments: PropTypes.arrayOf(PropTypes.shape(reviewsProp).isRequired).isRequired,
 };
