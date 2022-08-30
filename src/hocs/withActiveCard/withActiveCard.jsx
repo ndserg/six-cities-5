@@ -1,26 +1,24 @@
-import React, {PureComponent} from "react";
+import React from "react";
+import {useDispatch} from 'react-redux';
+import {setActiveOffer} from '../../store/action';
 
 const withActiveCard = (Component) => {
-  class WithActiveCard extends PureComponent {
-    constructor(props) {
-      super(props);
+  const WithActiveCard = (props) => {
 
-      this.state = {
-        activeCard: null,
-      };
-    }
+    const dispatch = useDispatch();
 
-    render() {
+    const activeCardHandler = (offer) => {
+      dispatch(setActiveOffer({currentOffer: offer}));
+    };
 
-      return (
-        <Component
-          {...this.props}
-          onHover={(evt) => this.setState({activeCard: evt.currentTarget.id})}
-          onBlur={() => this.setState({activeCard: null})}
-        />
-      );
-    }
-  }
+    return (
+      <Component
+        {...props}
+        onHover={(evt) => activeCardHandler(evt.currentTarget.id)}
+        onBlur={() => activeCardHandler(null)}
+      />
+    );
+  };
 
   WithActiveCard.propTypes = {};
 
