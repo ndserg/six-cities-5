@@ -1,4 +1,5 @@
 import React from "react";
+import {useSelector} from 'react-redux';
 import PropTypes from "prop-types";
 import placeCardProp from "../place-card/place-card.prop";
 import {MapContainer, TileLayer, Marker} from 'react-leaflet';
@@ -20,8 +21,18 @@ const icon = new Icon({
   iconSize: [30, 30]
 });
 
+const iconActive = new Icon({
+  iconUrl: `img/pin-active.svg`,
+  iconSize: [30, 30]
+});
+
+const getIcon = (currentId, offerId) => {
+  return Number(currentId) === offerId ? iconActive : icon;
+};
+
 const Map = (props) => {
   const {offers} = props;
+  const currentOfferId = useSelector((state) => state.currentOfferId);
 
   return (
     <MapContainer center={map.center} zoom={map.zoom} scrollWheelZoom={map.zoomControl} style={map.style}>
@@ -32,7 +43,7 @@ const Map = (props) => {
       {offers.map((offer) =>
         <Marker
           key={offer.id}
-          icon = {icon}
+          icon = {getIcon(currentOfferId, offer.id)}
           position={[offer.location.latitude, offer.location.longitude]}
         />
       )}
