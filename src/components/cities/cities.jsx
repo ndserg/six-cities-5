@@ -2,10 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import {useDispatch, useSelector} from 'react-redux';
 import City from '../city/city';
+import placeCardProp from "../place-card/place-card.prop";
 import {setCity} from '../../store/action';
+import {getUniqueCities} from "../../cities";
 
-const Cities = (props) => {
-  const {cities} = props;
+const Cities = ({offers}) => {
+  const cities = getUniqueCities(offers);
 
   const selectedCity = useSelector((state) => state.city);
 
@@ -31,7 +33,7 @@ const Cities = (props) => {
 };
 
 Cities.propTypes = {
-  cities: PropTypes.array.isRequired,
+  offers: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
 };
 
 export default Cities;
