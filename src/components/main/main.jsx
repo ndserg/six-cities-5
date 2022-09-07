@@ -1,26 +1,32 @@
 import React from "react";
+import {useSelector} from 'react-redux';
 import PropTypes from "prop-types";
 import Header from "../header/header";
 import Cities from "../cities/cities";
 import PlaceCards from "../place-cards/place-cards";
 import placeCardProp from "../place-card/place-card.prop";
-import MainEmty from "../main-empty/main-empty";
+import MainEmpty from "../main-empty/main-empty";
 import Map from "../map/map";
+import {getFilterdOffers} from "../../cities";
 
 const Main = (props) => {
   const {offers} = props;
   const isEmptyOffers = !(offers && offers.length > 0) ? true : false;
   const emptyClass = isEmptyOffers ? `cities__places-container--empty` : ``;
   const mainEmtyClass = isEmptyOffers ? `page__main--index-empty` : ``;
+  const selectedCity = useSelector((state) => state.city);
+  const filteredOffers = !isEmptyOffers ? getFilterdOffers(selectedCity.name, offers) : [];
 
   function EmptyPlaces() {
-    return !isEmptyOffers ? <PlaceCards offers={offers} /> : <MainEmty />;
+    return !isEmptyOffers ? <PlaceCards offers={filteredOffers} /> : <MainEmpty />;
   }
 
   function EmptyMap() {
     if (!isEmptyOffers) {
       return (<section className="cities__map map">
-        <Map offers={offers} />
+        <Map
+          offers={filteredOffers}
+          city={selectedCity} />
       </section>
       );
     }

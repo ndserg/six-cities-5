@@ -7,10 +7,9 @@ import {Icon} from 'leaflet';
 import "leaflet/dist/leaflet.css";
 
 const zoom = 12;
-const city = [52.38333, 4.9];
 
 const map = {
-  center: city,
+  center: [52.38333, 4.9],
   zoom,
   zoomControl: true,
   style: {height: `100%`}

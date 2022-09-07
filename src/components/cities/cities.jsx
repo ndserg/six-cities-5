@@ -8,24 +8,24 @@ import {getUniqueCities} from "../../cities";
 
 const Cities = ({offers}) => {
   const cities = getUniqueCities(offers);
-
+  const sortedCities = Object.keys(cities).sort();
   const selectedCity = useSelector((state) => state.city);
 
   const dispatch = useDispatch();
 
   const cityClickHandler = (city) => {
-    dispatch(setCity({currentCity: city}));
+    dispatch(setCity({currentCity: {name: cities[city].name, loacation: [cities[city].location.latitude, cities[city].location.longitude]}}));
   };
 
   return (
     <ul className="locations__list tabs__list">
-      {cities.map((city, id) =>
+      {sortedCities.map((city, id) =>
         <City
           key={`${city}` + `${id}`}
           className="locations__item"
           onCitySelect={cityClickHandler}
           city={city}
-          currentCity={selectedCity}
+          currentCity={selectedCity.name}
         />
       )}
     </ul>

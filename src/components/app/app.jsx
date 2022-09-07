@@ -1,15 +1,23 @@
 import React from "react";
+import {useSelector} from 'react-redux';
 import PropTypes from "prop-types";
 import {Routes, Route, BrowserRouter} from "react-router-dom";
 import Main from "../main/main";
 import Login from "../login/login";
 import Favorites from "../favorites/favorites";
 import Room from "../room/room";
-import placeCardProp from "../place-card/place-card.prop";
+import LoadingPage from "../loading-page/loading-page";
 import reviewsProp from "../reviews/reviews.prop";
 
 const App = (props) => {
-  const {offers, comments} = props;
+  const {comments} = props;
+  const {offers, isDataLoaded} = useSelector((state) => state);
+
+  if (isDataLoaded) {
+    return (
+      <LoadingPage />
+    );
+  }
 
   return (
     <BrowserRouter>
@@ -44,7 +52,6 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  offers: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
   comments: PropTypes.arrayOf(PropTypes.shape(reviewsProp).isRequired).isRequired,
 };
 

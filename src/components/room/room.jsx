@@ -27,6 +27,7 @@ const descriptionTemplate = (text, key) => <p key={`paragraph-` + `${key}`} clas
 
 const Room = (props) => {
   const {offer, offers, comments} = props;
+
   const {images, isPremium, title, isFavorite, rating, bedrooms, type, maxAdults, price, goods, host, description} = offer;
 
   const {avatarUrl, name, isPro} = host;

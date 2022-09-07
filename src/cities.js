@@ -1,11 +1,9 @@
 const getUniqueCities = (offers) => {
-  const citiesAll = [];
+  const cities = {};
 
-  offers.forEach((offer) => citiesAll.push(offer.city.name));
+  offers.forEach((offer) => (cities[offer.city.name] = offer.city));
 
-  const citiesUnique = new Set(citiesAll);
-
-  return Array.from(citiesUnique).sort();
+  return cities;
 };
 
 const getFilterdOffers = (selectedCity, offers) => {

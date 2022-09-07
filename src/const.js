@@ -5,4 +5,16 @@ const sortTypes = {
   byRating: `Top rated first`,
 };
 
-export {sortTypes};
+const AuthorizationStatus = {
+  Auth: `AUTH`,
+  NoAuth: `NO_AUTH`,
+  Unknown: `UNKNOWN`,
+};
+
+const APIRoute = {
+  Hotels: `/hotels`,
+  Login: `/login`,
+  Logout: `/logout`,
+};
+
+export {sortTypes, AuthorizationStatus, APIRoute};
