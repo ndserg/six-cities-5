@@ -17,4 +17,14 @@ const APIRoute = {
   Logout: `/logout`,
 };
 
-export {sortTypes, AuthorizationStatus, APIRoute};
+const MARKER_DEFAULT = {
+  iconUrl: `img/pin.svg`,
+  iconSize: [30, 30]
+};
+
+const MARKER_CURRENT = {
+  iconUrl: `img/pin-active.svg`,
+  iconSize: [30, 30]
+};
+
+export {sortTypes, AuthorizationStatus, APIRoute, MARKER_DEFAULT, MARKER_CURRENT};

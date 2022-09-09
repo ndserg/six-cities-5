@@ -1,31 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import City from '../city/city';
-import placeCardProp from "../place-card/place-card.prop";
 import {setCity} from '../../store/action';
-import {getUniqueCities} from "../../cities";
 
-const Cities = ({offers}) => {
-  const cities = getUniqueCities(offers);
+const Cities = ({cities, city}) => {
+
   const sortedCities = Object.keys(cities).sort();
-  const selectedCity = useSelector((state) => state.city);
 
   const dispatch = useDispatch();
 
-  const cityClickHandler = (city) => {
-    dispatch(setCity({currentCity: {name: cities[city].name, loacation: [cities[city].location.latitude, cities[city].location.longitude]}}));
+  const cityClickHandler = (selectedCity) => {
+    dispatch(setCity({currentCity: cities[selectedCity].name}));
   };
 
   return (
     <ul className="locations__list tabs__list">
-      {sortedCities.map((city, id) =>
+      {sortedCities.map((place, id) =>
         <City
           key={`${city}` + `${id}`}
           className="locations__item"
           onCitySelect={cityClickHandler}
-          city={city}
-          currentCity={selectedCity.name}
+          city={place}
+          currentCity={city}
         />
       )}
     </ul>
@@ -33,7 +30,8 @@ const Cities = ({offers}) => {
 };
 
 Cities.propTypes = {
-  offers: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
+  city: PropTypes.string.isRequired,
+  cities: PropTypes.object.isRequired,
 };
 
 export default Cities;

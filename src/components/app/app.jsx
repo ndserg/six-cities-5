@@ -11,7 +11,8 @@ import reviewsProp from "../reviews/reviews.prop";
 
 const App = (props) => {
   const {comments} = props;
-  const {offers, isDataLoaded} = useSelector((state) => state);
+  const offers = useSelector((state) => state.offers);
+  const isDataLoaded = useSelector((state) => state.isDataLoaded);
 
   if (isDataLoaded) {
     return (

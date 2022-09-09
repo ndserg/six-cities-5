@@ -3,10 +3,7 @@ import {setCity, loadOffers, changeSortType, setActiveOffer, requireAuthorizatio
 import {AuthorizationStatus} from '../const';
 
 const initialState = {
-  city: {
-    name: `Amsterdam`,
-    location: [52.38333, 4.9]
-  },
+  city: `Amsterdam`,
   offers: [],
   currentSortType: `popular`,
   currentOfferId: null,
