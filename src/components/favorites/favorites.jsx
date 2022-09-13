@@ -2,87 +2,50 @@ import React from "react";
 import PropTypes from "prop-types";
 import FavoriteCard from "../favorite-card/favorite-card";
 import withActiveCard from "../../hocs/withActiveCard/withActiveCard";
+import Header from "../header/header";
+import {getFavorites} from "../../cities";
 import placeCardProp from "../place-card/place-card.prop";
 
 const Favorites = (props) => {
 
   const {offers, onHover, onBlur} = props;
 
-  return (
-    <div className="page">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <a className="header__logo-link" href="/">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </a>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+  const favorites = getFavorites(offers);
+
+  const offerTemplate = (city, id) => {
+    return (
+      <li key={city + id} className="favorites__locations-items">
+        <div className="favorites__locations locations locations--current">
+          <div className="locations__item">
+            <a className="locations__item-link" href="#">
+              <span>{city}</span>
+            </a>
           </div>
         </div>
-      </header>
+        <div className="favorites__places">
+          {(favorites[city]).map((offer) => (
+            <FavoriteCard
+              key={offer.id}
+              offer={offer}
+              onHover={onHover}
+              onBlur={onBlur}
+            />
+          ))}
+        </div>
+      </li>
+    );
+  };
+
+  return (
+    <div className="page">
+      <Header />
 
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Amsterdam</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="favorites__places">
-                  {offers.map((offer, i) => (
-                    <FavoriteCard
-                      key={offer.id}
-                      offer={offers[i]}
-                      onHover={onHover}
-                      onBlur={onBlur}
-                    />
-                  ))}
-                </div>
-              </li>
-
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Cologne</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="favorites__places">
-                  {offers.map((offer) => (
-                    <FavoriteCard
-                      key={offer.id}
-                      offer={offer}
-                      onHover={onHover}
-                      onBlur={onBlur}
-                    />
-                  ))}
-                </div>
-              </li>
+              {Object.keys(favorites).map((city, id) => offerTemplate(city, id))}
             </ul>
           </section>
         </div>

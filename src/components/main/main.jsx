@@ -7,8 +7,8 @@ import PlaceCards from "../place-cards/place-cards";
 import placeCardProp from "../place-card/place-card.prop";
 import MainEmpty from "../main-empty/main-empty";
 import Map from "../map/map";
-import {getFilterdOffers} from "../../cities";
 import {getUniqueCities} from "../../cities";
+import {getFilterdOffers} from "../../cities";
 
 const Main = (props) => {
   const {offers} = props;
@@ -17,17 +17,17 @@ const Main = (props) => {
   const emptyClass = isEmptyOffers ? `cities__places-container--empty` : ``;
   const mainEmtyClass = isEmptyOffers ? `page__main--index-empty` : ``;
   const selectedCity = useSelector((state) => state.city);
-  const filteredOffers = !isEmptyOffers ? getFilterdOffers(selectedCity, offers) : [];
+  const offersByCity = getFilterdOffers(offers, selectedCity);
 
   function EmptyPlaces() {
-    return !isEmptyOffers ? <PlaceCards offers={filteredOffers} /> : <MainEmpty />;
+    return !isEmptyOffers ? <PlaceCards offers={offersByCity} /> : <MainEmpty />;
   }
 
   function EmptyMap() {
     if (!isEmptyOffers) {
       return (<section className="cities__map map">
         <Map
-          offers={filteredOffers}
+          offers={offersByCity}
           cities={cities}
           city={selectedCity} />
       </section>

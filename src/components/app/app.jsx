@@ -2,6 +2,7 @@ import React from "react";
 import {useSelector} from 'react-redux';
 import PropTypes from "prop-types";
 import {Routes, Route, BrowserRouter} from "react-router-dom";
+import PrivateRoute from '../../components/private-route/private-route';
 import Main from "../main/main";
 import Login from "../login/login";
 import Favorites from "../favorites/favorites";
@@ -11,8 +12,10 @@ import reviewsProp from "../reviews/reviews.prop";
 
 const App = (props) => {
   const {comments} = props;
+
   const offers = useSelector((state) => state.offers);
   const isDataLoaded = useSelector((state) => state.isDataLoaded);
+  const authState = useSelector((state) => state.authorizationStatus);
 
   if (isDataLoaded) {
     return (
@@ -35,9 +38,13 @@ const App = (props) => {
         />
         <Route
           path={`/favorites`}
-          element={<Favorites
-            offers={offers}
-          />}
+          element={
+            <PrivateRoute authorizationStatus={authState}>
+              <Favorites
+                offers={offers}
+              />
+            </PrivateRoute>
+          }
         />
         <Route
           path={`/offer/:id`}

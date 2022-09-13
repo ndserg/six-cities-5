@@ -37,7 +37,7 @@ function Map(props) {
     }
   }, [map, offers, currentOfferId]);
 
-  return <div style={{height: `500px`}} ref={mapRef}></div>;
+  return <div style={{height: `100%`}} ref={mapRef}></div>;
 }
 
 Map.propTypes = {
