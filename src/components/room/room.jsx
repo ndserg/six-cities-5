@@ -1,4 +1,5 @@
 import React from "react";
+import {useParams} from "react-router-dom";
 import PropTypes from "prop-types";
 import CommentForm from "../comment-form/comment-form";
 import Reviews from "../reviews/reviews";
@@ -30,7 +31,11 @@ const hostProStatusTemplate = <span className="property__user-status">Pro</span>
 const descriptionTemplate = (text, key) => <p key={`paragraph-` + `${key}`} className="property__text">{text}</p>;
 
 const Room = (props) => {
-  const {offer, offers, comments} = props;
+  const {offers, comments} = props;
+
+  const {id} = useParams();
+  const offer = offers.find((item) => item.id === Number(id));
+
   const {images, isPremium, title, isFavorite, rating, bedrooms, type, maxAdults, price, goods, host, description} = offer;
   const {avatarUrl, name, isPro} = host;
   const selectedCity = offer.city.name;
@@ -138,7 +143,6 @@ const Room = (props) => {
 };
 
 Room.propTypes = {
-  offer: PropTypes.shape(placeCardProp).isRequired,
   offers: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
   comments: PropTypes.arrayOf(PropTypes.shape(reviewsProp).isRequired).isRequired,
 };

@@ -49,7 +49,6 @@ const App = (props) => {
         <Route
           path={`/offer/:id`}
           element={<Room
-            offer={offers[0]}
             offers={offers}
             comments={comments}
           />}
