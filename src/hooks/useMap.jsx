@@ -28,7 +28,7 @@ function useMap(mapRef, cities, city) {
       setMap(instance);
       isRendered.current = true;
     }
-  }, [mapRef, map, city]);
+  }, [mapRef, map, city, isRendered]);
 
   return map;
 }

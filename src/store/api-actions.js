@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {loadOffers, requireAuthorization, setDataLoadedStatus} from './action';
+import {loadOffers, loadOffer, loadComments, loadNearPlaces, requireAuthorization, setDataLoadedStatus} from './action';
 import {saveToken, dropToken} from '../services/token';
 import {saveUserName, dropUserName} from '../services/user-name';
 import {APIRoute, AuthorizationStatus} from '../const';
@@ -11,6 +11,42 @@ export const fetchOffersAction = createAsyncThunk(
       dispatch(setDataLoadedStatus(true));
       dispatch(loadOffers(data));
       dispatch(setDataLoadedStatus(false));
+    },
+);
+
+export const fetchOfferAction = createAsyncThunk(
+    `data/fetchOffer`,
+    async (id, {dispatch, extra: api}) => {
+      try {
+        const {data} = await api.get(`${APIRoute.Hotels}/${id}`);
+        dispatch(loadOffer(data));
+      } catch {
+        console.log(`error`);
+      }
+    },
+);
+
+export const fetchNearPlacesAction = createAsyncThunk(
+    `data/fetchOffer`,
+    async (id, {dispatch, extra: api}) => {
+      try {
+        const {data} = await api.get(`${APIRoute.Hotels}/${id}/nearby`);
+        dispatch(loadNearPlaces(data));
+      } catch {
+        console.log(`error`);
+      }
+    },
+);
+
+export const fetchCommentsAction = createAsyncThunk(
+    `data/fetchComments`,
+    async (id, {dispatch, extra: api}) => {
+      try {
+        const {data} = await api.get(`${APIRoute.Comments}/${id}`);
+        dispatch(loadComments(data));
+      } catch {
+        console.log(`error`);
+      }
     },
 );
 

@@ -13,6 +13,7 @@ const AuthorizationStatus = {
 
 const APIRoute = {
   Hotels: `/hotels`,
+  Comments: `/comments`,
   Login: `/login`,
   Logout: `/logout`,
 };
