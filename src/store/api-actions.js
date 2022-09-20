@@ -50,6 +50,18 @@ export const fetchCommentsAction = createAsyncThunk(
     },
 );
 
+export const postCommentAction = createAsyncThunk(
+    `data/postComment`,
+    async ({id, inputValues: {review: comment, rating}}, {dispatch, extra: api}) => {
+      try {
+        const {data} = await api.post(`${APIRoute.Comments}/${id}`, {comment, rating});
+        dispatch(loadComments(data));
+      } catch {
+        console.log(`error`);
+      }
+    },
+);
+
 export const checkAuthAction = createAsyncThunk(
     `user/checkAuth`,
     async (_arg, {dispatch, extra: api}) => {

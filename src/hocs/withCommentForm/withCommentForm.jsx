@@ -1,43 +1,49 @@
-import React, {PureComponent} from "react";
+import React, {useState} from "react";
+import PropTypes from "prop-types";
+import {useDispatch} from 'react-redux';
+import {postCommentAction} from '../../store/api-actions';
 
+const minValues = {
+  rating: 1,
+  review: 10,
+};
 
 const withCommentForm = (Component) => {
-  class WithCommentForm extends PureComponent {
+  const WithCommentForm = (props) => {
+    const {offerId: id} = props;
+    const [inputValues, setInputValues] = useState({rating: 0, review: ``});
+    const [isDisabled, setIsDisabled] = useState(false);
+    const dispatch = useDispatch();
 
-    constructor(props) {
-      super(props);
-
-      this.state = {
-        rating: 0,
-        review: ``,
-      };
-
-      this.handleSubmit = this.handleSubmit.bind(this);
-      this.handleFieldChange = this.handleFieldChange.bind(this);
-    }
-
-    handleSubmit(evt) {
+    const submitHandler = (evt) => {
       evt.preventDefault();
-    }
+      if ((inputValues.rating >= minValues.rating) && (inputValues.review.length >= minValues.review)) {
+        setIsDisabled(true);
+        dispatch(postCommentAction({id, inputValues}))
+        .then(() => setIsDisabled(false));
+      } else {
+        alert(`Ошибка при заполнении формы`);
+      }
+    };
 
-    handleFieldChange(evt) {
+    const fieldChangeHandler = (evt) => {
       const {name, value} = evt.target;
-      this.setState({[name]: value});
-    }
+      setInputValues({...inputValues, [name]: value});
+    };
 
-    render() {
+    return (
+      <Component
+        {...props}
+        isDisabled={isDisabled}
+        onSubmit={(evt) => submitHandler(evt)}
+        onChange={(evt) => fieldChangeHandler(evt)}
+      />
+    );
+  };
 
-      return (
-        <Component
-          {...this.props}
-          onSubmit={this.handleSubmit}
-          onChange={this.handleFieldChange}
-        />
-      );
-    }
-  }
-
-  WithCommentForm.propTypes = {};
+  WithCommentForm.propTypes = {
+    offerId: PropTypes.number.isRequired
+  };
 
   return WithCommentForm;
 };

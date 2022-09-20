@@ -113,7 +113,7 @@ const Offer = (props) => {
               </div>
               <section className="property__reviews reviews">
                 <Reviews comments={comments} />
-                {authorizationStatus === AuthorizationStatus.Auth ? <CommentForm /> : null}
+                {authorizationStatus === AuthorizationStatus.Auth ? <CommentForm offerId={offer.id}/> : null}
               </section>
             </div>
           </div>
