@@ -12,11 +12,12 @@ import {getFilterdOffers} from "../../cities";
 
 const Main = (props) => {
   const {offers} = props;
+  const selectedCity = useSelector((state) => state.city);
   const cities = getUniqueCities(offers);
   const isEmptyOffers = !(offers && offers.length > 0) ? true : false;
   const emptyClass = isEmptyOffers ? `cities__places-container--empty` : ``;
   const mainEmtyClass = isEmptyOffers ? `page__main--index-empty` : ``;
-  const selectedCity = useSelector((state) => state.city);
+
   const offersByCity = getFilterdOffers(offers, selectedCity);
 
   function EmptyPlaces() {
@@ -28,8 +29,8 @@ const Main = (props) => {
       return (<section className="cities__map map">
         <Map
           offers={offersByCity}
-          cities={cities}
-          city={selectedCity} />
+          city={cities[selectedCity]}
+        />
       </section>
       );
     }

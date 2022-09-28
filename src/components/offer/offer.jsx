@@ -1,13 +1,14 @@
-import React from "react";
+import React, {useEffect} from "react";
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchNearPlacesAction} from '../../store/api-actions';
 import PropTypes from "prop-types";
 import Header from "../header/header";
 import CommentForm from "../comment-form/comment-form";
 import Reviews from "../reviews/reviews";
 import NearPlaces from "../near-places/near-places";
 import Map from "../map/map";
+import withFavoriteFlag from "../../hocs/withFavoriteFlag/withFavoriteFlag";
 import placeCardProp from "../place-card/place-card.prop";
-import reviewsProp from "../reviews/reviews.prop";
-import {getUniqueCities} from "../../cities";
 import {AuthorizationStatus} from '../../const';
 
 const premiumMarkTemplate = <div className="property__mark"><span>Premium</span></div>;
@@ -29,13 +30,17 @@ const hostProStatusTemplate = <span className="property__user-status">Pro</span>
 const descriptionTemplate = (text, key) => <p key={`paragraph-` + `${key}`} className="property__text">{text}</p>;
 
 const Offer = (props) => {
-  const {comments, offer, nearPlaces, authorizationStatus} = props;
-
-
+  const {offer, authorizationStatus, onBookmark} = props;
   const {isPremium, title, isFavorite, rating, bedrooms, type, maxAdults, price, goods, host, description, images} = offer;
   const {avatarUrl, name, isPro} = host;
-  const selectedCity = offer.city.name;
-  const cities = getUniqueCities(nearPlaces);
+
+  const nearPlaces = useSelector((state) => state.nearPlaces);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchNearPlacesAction(offer.id));
+  }, [offer]);
 
   const propertyDescription = description.split(/[.!?]/);
   const proStatus = isPro ? hostProStatusTemplate : ``;
@@ -43,6 +48,10 @@ const Offer = (props) => {
   const isBookmarkedClass = isFavorite ? ` property__bookmark-button--active` : ``;
   const isBookmarkedText = isFavorite ? `In bookmarks` : `To bookmarks`;
   const ratingWidth = (rating * 100 / 5) + `%`;
+
+  if (!nearPlaces) {
+    return null;
+  }
 
   return (
     <div className="page">
@@ -61,7 +70,7 @@ const Offer = (props) => {
                 <h1 className="property__name">
                   {title}
                 </h1>
-                <button className={`property__bookmark-button button` + isBookmarkedClass + ` button`} type="button">
+                <button className={`property__bookmark-button button` + isBookmarkedClass + ` button`} type="button" onClick={onBookmark}>
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -112,7 +121,7 @@ const Offer = (props) => {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <Reviews comments={comments} />
+                <Reviews offerId={offer.id} />
                 {authorizationStatus === AuthorizationStatus.Auth ? <CommentForm offerId={offer.id}/> : null}
               </section>
             </div>
@@ -120,14 +129,11 @@ const Offer = (props) => {
           <section className="property__map map">
             <Map
               offers={nearPlaces}
-              cities={cities}
-              city={selectedCity} />
+              city={offer.city} />
           </section>
         </section>
         <div className="container">
-          <NearPlaces
-            offers={nearPlaces}
-          />
+          <NearPlaces offers={nearPlaces} />
         </div>
       </main>
     </div>
@@ -136,9 +142,8 @@ const Offer = (props) => {
 
 Offer.propTypes = {
   offer: PropTypes.shape(placeCardProp).isRequired,
-  comments: PropTypes.arrayOf(PropTypes.shape(reviewsProp).isRequired).isRequired,
-  nearPlaces: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
   authorizationStatus: PropTypes.string.isRequired,
+  onBookmark: PropTypes.func.isRequired
 };
 
-export default Offer;
+export default withFavoriteFlag(Offer);

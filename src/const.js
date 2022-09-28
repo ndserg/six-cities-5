@@ -14,6 +14,7 @@ const AuthorizationStatus = {
 const APIRoute = {
   Hotels: `/hotels`,
   Comments: `/comments`,
+  Favorite: `/favorite`,
   Login: `/login`,
   Logout: `/logout`,
 };

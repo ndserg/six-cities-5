@@ -1,11 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import placeCardProp from "../place-card/place-card.prop";
 import NearCard from "../near-card/near-card";
 import withActiveCard from "../../hocs/withActiveCard/withActiveCard";
-import placeCardProp from "../place-card/place-card.prop";
 
 const NearPlaces = (props) => {
-
   const {offers, onHover, onBlur} = props;
 
   return (

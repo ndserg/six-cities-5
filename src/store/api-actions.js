@@ -62,6 +62,18 @@ export const postCommentAction = createAsyncThunk(
     },
 );
 
+export const setFavoriteAction = createAsyncThunk(
+    `data/setFavorite`,
+    async ({id, isBookmark}, {dispatch, extra: api}) => {
+      try {
+        const {data} = await api.post(`${APIRoute.Favorite}/${id}/${isBookmark}`);
+        dispatch(loadOffer(data));
+      } catch {
+        console.log(`error`);
+      }
+    },
+);
+
 export const checkAuthAction = createAsyncThunk(
     `user/checkAuth`,
     async (_arg, {dispatch, extra: api}) => {

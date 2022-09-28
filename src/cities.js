@@ -11,7 +11,7 @@ const getFilterdOffers = (offers, selectedCity) => {
 };
 
 const getFavorites = (offers) => {
-  const favorites = offers.slice().filter((offer) => offer.isPremium === true);
+  const favorites = offers.slice().filter((offer) => offer.isFavorite === true);
   const favoritesList = {};
 
   favorites.forEach((offer) => {

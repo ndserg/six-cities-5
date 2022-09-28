@@ -10,8 +10,8 @@ import LoadingPage from "../loading-page/loading-page";
 
 const App = () => {
   const offers = useSelector((state) => state.offers);
-  const isDataLoaded = useSelector((state) => state.isDataLoaded);
   const authState = useSelector((state) => state.authorizationStatus);
+  const isDataLoaded = useSelector((state) => state.isDataLoaded);
 
   if (isDataLoaded) {
     return (
@@ -36,9 +36,7 @@ const App = () => {
           path={`/favorites`}
           element={
             <PrivateRoute authorizationStatus={authState}>
-              <Favorites
-                offers={offers}
-              />
+              <Favorites />
             </PrivateRoute>
           }
         />
