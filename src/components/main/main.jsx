@@ -1,17 +1,15 @@
 import React from "react";
 import {useSelector} from 'react-redux';
-import PropTypes from "prop-types";
 import Header from "../header/header";
 import Cities from "../cities/cities";
 import PlaceCards from "../place-cards/place-cards";
-import placeCardProp from "../place-card/place-card.prop";
 import MainEmpty from "../main-empty/main-empty";
 import Map from "../map/map";
 import {getUniqueCities} from "../../cities";
 import {getFilterdOffers} from "../../cities";
 
-const Main = (props) => {
-  const {offers} = props;
+const Main = () => {
+  const offers = useSelector((state) => state.offers);
   const selectedCity = useSelector((state) => state.city);
   const cities = getUniqueCities(offers);
   const isEmptyOffers = !(offers && offers.length > 0) ? true : false;
@@ -65,8 +63,6 @@ const Main = (props) => {
   );
 };
 
-Main.propTypes = {
-  offers: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
-};
+Main.propTypes = {};
 
 export default Main;

@@ -10,8 +10,7 @@ const getFilterdOffers = (offers, selectedCity) => {
   return offers.filter((offer) => offer.city.name === selectedCity);
 };
 
-const getFavorites = (offers) => {
-  const favorites = offers.slice().filter((offer) => offer.isFavorite === true);
+const getFavorites = (favorites) => {
   const favoritesList = {};
 
   favorites.forEach((offer) => {

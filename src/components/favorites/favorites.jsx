@@ -1,16 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {useSelector} from 'react-redux';
 import FavoriteCard from "../favorite-card/favorite-card";
+import {getFavorites} from "../../cities";
 import withActiveCard from "../../hocs/withActiveCard/withActiveCard";
 import Header from "../header/header";
-import {getFavorites} from "../../cities";
-import placeCardProp from "../place-card/place-card.prop";
 
 const Favorites = (props) => {
+  const {onHover, onBlur} = props;
+  const offers = useSelector((state) => state.favorites);
 
-  const {offers, onHover, onBlur} = props;
-
-  const favorites = getFavorites(offers);
+  const favoritesSorted = getFavorites(offers);
 
   const offerTemplate = (city, id) => {
     return (
@@ -23,7 +23,7 @@ const Favorites = (props) => {
           </div>
         </div>
         <div className="favorites__places">
-          {(favorites[city]).map((offer) => (
+          {(favoritesSorted[city]).map((offer) => (
             <FavoriteCard
               key={offer.id}
               offer={offer}
@@ -45,7 +45,7 @@ const Favorites = (props) => {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {Object.keys(favorites).map((city, id) => offerTemplate(city, id))}
+              {Object.keys(favoritesSorted).map((city, id) => offerTemplate(city, id))}
             </ul>
           </section>
         </div>
@@ -62,7 +62,6 @@ const Favorites = (props) => {
 Favorites.propTypes = {
   onHover: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
-  offers: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
 };
 
 export default withActiveCard(Favorites);

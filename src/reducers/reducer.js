@@ -1,5 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {setCity, loadOffers, loadOffer, loadComments, loadNearPlaces, changeSortType, setActiveOffer, requireAuthorization, setDataLoadedStatus} from '../store/action';
+import {setCity, loadOffers, loadOffer, loadFavoritePlaces, clearFavoritePlaces, loadComments, loadNearPlaces, changeSortType, setActiveOffer, requireAuthorization, setDataLoadedStatus} from '../store/action';
 import {AuthorizationStatus} from '../const';
 
 const initialState = {
@@ -8,6 +8,7 @@ const initialState = {
   offer: null,
   comments: null,
   nearPlaces: null,
+  favorites: [],
   currentSortType: `popular`,
   currentOfferId: null,
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -27,6 +28,12 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadNearPlaces, (state, action) => {
       state.nearPlaces = action.payload;
+    })
+    .addCase(loadFavoritePlaces, (state, action) => {
+      state.favorites = action.payload;
+    })
+    .addCase(clearFavoritePlaces, (state, action) => {
+      state.favorites = action.payload;
     })
     .addCase(setDataLoadedStatus, (state, action) => {
       state.isDataLoaded = action.payload;

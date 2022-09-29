@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {loadOffers, loadOffer, loadComments, loadNearPlaces, requireAuthorization, setDataLoadedStatus} from './action';
+import {loadOffers, loadOffer, loadFavoritePlaces, loadComments, loadNearPlaces, requireAuthorization, setDataLoadedStatus} from './action';
 import {saveToken, dropToken} from '../services/token';
 import {saveUserName, dropUserName} from '../services/user-name';
 import {APIRoute, AuthorizationStatus} from '../const';
@@ -11,6 +11,18 @@ export const fetchOffersAction = createAsyncThunk(
       dispatch(setDataLoadedStatus(true));
       dispatch(loadOffers(data));
       dispatch(setDataLoadedStatus(false));
+    },
+);
+
+export const fetchFavoritesAction = createAsyncThunk(
+    `data/fetchFavorites`,
+    async (_arg, {dispatch, extra: api}) => {
+      try {
+        const {data} = await api.get(APIRoute.Favorite);
+        dispatch(loadFavoritePlaces(data));
+      } catch {
+        console.log(`error`);
+      }
     },
 );
 

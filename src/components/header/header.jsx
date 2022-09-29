@@ -3,24 +3,26 @@ import {Link, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUserName} from '../../services/user-name';
 import {AuthorizationStatus} from '../../const';
+import {clearFavoritePlaces} from '../../store/action';
 import {logoutAction} from '../../store/api-actions';
-
 
 const Header = () => {
   const authorizationStatus = useSelector((state) => state.authorizationStatus);
+  const favorites = useSelector((state) => state.favorites);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const isAuth = (authorizationStatus === AuthorizationStatus.Auth);
 
   const userName = isAuth ? getUserName() : `Login please!`;
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const favoritesCount = favorites ? favorites.length : 0;
 
   const handleClick = (evt) => {
     evt.preventDefault();
 
     navigate(`/`);
     dispatch(logoutAction());
+    dispatch(clearFavoritePlaces());
   };
 
   const logOutTemplate = () => {
@@ -52,7 +54,7 @@ const Header = () => {
                   <div className="header__avatar-wrapper user__avatar-wrapper">
                   </div>
                   <span className="header__user-name user__name">{userName}</span>
-                  <span className="header__favorite-count">3</span>
+                  {!isAuth || <span className="header__favorite-count">{favoritesCount}</span>}
                 </Link>
               </li>
               {!isAuth || logOutTemplate()}
