@@ -1,12 +1,13 @@
 import React from "react";
 import {Link} from 'react-router-dom';
+import withFavoriteFlag from "../../hocs/withFavoriteFlag/withFavoriteFlag";
 import PropTypes from "prop-types";
 import placeCardProp from "./place-card.prop";
 
 const premiumMarkTemplate = <div className="place-card__mark"><span>Premium</span></div>;
 
 const PlaceCard = (props) => {
-  const {classPrefix = ``, imgStyle, offer, onHover, onBlur} = props;
+  const {classPrefix = ``, imgStyle, offer, onHover, onBlur, onBookmark} = props;
   const {previewImage, price, rating, title, type, isPremium, isFavorite, id} = offer;
   const {width = 260, height = 200} = imgStyle || {};
 
@@ -34,7 +35,7 @@ const PlaceCard = (props) => {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`place-card__bookmark-button` + isBookmarkedClass + ` button`} type="button">
+          <button className={`place-card__bookmark-button` + isBookmarkedClass + ` button`} type="button" onClick={onBookmark}>
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -61,9 +62,10 @@ const PlaceCard = (props) => {
 PlaceCard.propTypes = {
   onHover: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
+  onBookmark: PropTypes.func.isRequired,
   classPrefix: PropTypes.string,
   imgStyle: PropTypes.shape({width: PropTypes.number, height: PropTypes.number}),
   offer: PropTypes.shape(placeCardProp).isRequired,
 };
 
-export default PlaceCard;
+export default withFavoriteFlag(PlaceCard);

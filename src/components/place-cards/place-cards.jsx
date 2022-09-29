@@ -6,15 +6,14 @@ import Sorting from "../sort-types/sort-types";
 import {sortTypes} from "../../const";
 import withActiveCard from "../../hocs/withActiveCard/withActiveCard";
 import placeCardProp from "../place-card/place-card.prop";
-import {getFilterdOffers, getSortedOffers} from "../../cities";
+import {getSortedOffers} from "../../cities";
 
 const PlaceCards = (props) => {
   const {offers, onHover, onBlur} = props;
-  const selectedCity = useSelector((state) => state.city);
-  const currentOffers = getFilterdOffers(selectedCity, offers);
+
   const selectedSortType = useSelector((state) => state.currentSortType);
   const placesFound = offers.length;
-  const sortedOffers = getSortedOffers(currentOffers, selectedSortType);
+  const sortedOffers = getSortedOffers(offers, selectedSortType);
 
   return (
     <section className="cities__places places">

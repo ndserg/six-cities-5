@@ -1,26 +1,34 @@
 import React from "react";
-import PropTypes from "prop-types";
+import {useSelector} from 'react-redux';
 import Header from "../header/header";
 import Cities from "../cities/cities";
 import PlaceCards from "../place-cards/place-cards";
-import placeCardProp from "../place-card/place-card.prop";
-import MainEmty from "../main-empty/main-empty";
+import MainEmpty from "../main-empty/main-empty";
 import Map from "../map/map";
+import {getUniqueCities} from "../../cities";
+import {getFilterdOffers} from "../../cities";
 
-const Main = (props) => {
-  const {offers} = props;
+const Main = () => {
+  const offers = useSelector((state) => state.offers);
+  const selectedCity = useSelector((state) => state.city);
+  const cities = getUniqueCities(offers);
   const isEmptyOffers = !(offers && offers.length > 0) ? true : false;
   const emptyClass = isEmptyOffers ? `cities__places-container--empty` : ``;
   const mainEmtyClass = isEmptyOffers ? `page__main--index-empty` : ``;
 
+  const offersByCity = getFilterdOffers(offers, selectedCity);
+
   function EmptyPlaces() {
-    return !isEmptyOffers ? <PlaceCards offers={offers} /> : <MainEmty />;
+    return !isEmptyOffers ? <PlaceCards offers={offersByCity} /> : <MainEmpty />;
   }
 
   function EmptyMap() {
     if (!isEmptyOffers) {
       return (<section className="cities__map map">
-        <Map offers={offers} />
+        <Map
+          offers={offersByCity}
+          city={cities[selectedCity]}
+        />
       </section>
       );
     }
@@ -36,7 +44,10 @@ const Main = (props) => {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <Cities offers={offers} />
+            <Cities
+              cities={cities}
+              city={selectedCity}
+            />
           </section>
         </div>
         <div className="cities">
@@ -52,8 +63,6 @@ const Main = (props) => {
   );
 };
 
-Main.propTypes = {
-  offers: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
-};
+Main.propTypes = {};
 
 export default Main;

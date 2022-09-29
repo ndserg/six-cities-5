@@ -1,58 +1,58 @@
-import React from "react";
+import React from 'react';
+import {useRef, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import PropTypes from "prop-types";
 import placeCardProp from "../place-card/place-card.prop";
-import {MapContainer, TileLayer, Marker} from 'react-leaflet';
-import {Icon} from 'leaflet';
+import useMap from '../../hooks/useMap';
+import {MARKER_DEFAULT, MARKER_CURRENT} from '../../const';
+import leaflet, {Icon, Marker} from 'leaflet';
 import "leaflet/dist/leaflet.css";
 
-const zoom = 12;
-const city = [52.38333, 4.9];
+const defaultCustomIcon = new Icon(MARKER_DEFAULT);
+const currentCustomIcon = new Icon(MARKER_CURRENT);
 
-const map = {
-  center: city,
-  zoom,
-  zoomControl: true,
-  style: {height: `100%`}
-};
+const markerGroup = leaflet.layerGroup();
 
-const icon = new Icon({
-  iconUrl: `img/pin.svg`,
-  iconSize: [30, 30]
-});
-
-const iconActive = new Icon({
-  iconUrl: `img/pin-active.svg`,
-  iconSize: [30, 30]
-});
-
-const getIcon = (currentId, offerId) => {
-  return Number(currentId) === offerId ? iconActive : icon;
-};
-
-const Map = (props) => {
-  const {offers} = props;
+function Map(props) {
+  const {offers, city} = props;
   const currentOfferId = useSelector((state) => state.currentOfferId);
+  const mapRef = useRef(null);
+  const map = useMap(mapRef, city);
 
-  return (
-    <MapContainer center={map.center} zoom={map.zoom} scrollWheelZoom={map.zoomControl} style={map.style}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-      />
-      {offers.map((offer) =>
-        <Marker
-          key={offer.id}
-          icon = {getIcon(currentOfferId, offer.id)}
-          position={[offer.location.latitude, offer.location.longitude]}
-        />
-      )}
-    </MapContainer>
-  );
-};
+  useEffect(() => {
+    if (map) {
+      markerGroup.clearLayers();
+      markerGroup.addTo(map);
+
+      map.setView({
+        lat: city.location.latitude,
+        lng: city.location.longitude,
+      }, city.location.zoom);
+
+      offers.forEach((offer) => {
+        const marker = new Marker({
+          lat: offer.location.latitude,
+          lng: offer.location.longitude
+        });
+
+        marker
+          .setIcon(
+              currentOfferId !== undefined &&
+              offer.id === Number(currentOfferId)
+                ? currentCustomIcon
+                : defaultCustomIcon
+          )
+          .addTo(markerGroup);
+      });
+    }
+  });
+
+  return <div style={{height: `100%`}} ref={mapRef}></div>;
+}
 
 Map.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.shape(placeCardProp).isRequired).isRequired,
+  city: PropTypes.object.isRequired,
 };
 
 export default Map;

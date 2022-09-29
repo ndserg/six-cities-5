@@ -4,7 +4,6 @@ import {setActiveOffer} from '../../store/action';
 
 const withActiveCard = (Component) => {
   const WithActiveCard = (props) => {
-
     const dispatch = useDispatch();
 
     const activeCardHandler = (offer) => {

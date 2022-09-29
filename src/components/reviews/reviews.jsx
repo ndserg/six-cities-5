@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import reviewsProp from "./reviews.prop";
+import React, {useEffect} from "react";
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchCommentsAction} from '../../store/api-actions';
 
 const MONTHS = [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `Desember`];
 
@@ -40,7 +40,19 @@ const reviewTemplate = (review) => {
 };
 
 const Reviews = (props) => {
-  const {comments} = props;
+  const {offerId} = props;
+  const comments = useSelector((state) => state.comments);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!comments) {
+      dispatch(fetchCommentsAction(offerId));
+    }
+  });
+
+  if (!comments) {
+    return null;
+  }
 
   return (
     <React.Fragment>
@@ -52,8 +64,6 @@ const Reviews = (props) => {
   );
 };
 
-Reviews.propTypes = {
-  comments: PropTypes.arrayOf(PropTypes.shape(reviewsProp).isRequired).isRequired,
-};
+Reviews.propTypes = {};
 
 export default Reviews;
