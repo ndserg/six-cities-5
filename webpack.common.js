@@ -1,21 +1,16 @@
 const path = require(`path`);
+const HtmlWebpackPlugin = require(`html-webpack-plugin`);
 
 module.exports = {
-  mode: `development`,
   entry: `./src/index.js`,
-  output: {
-    path: path.join(__dirname, `public`),
-    filename: `bundle.js`,
-  },
-  devtool: `source-map`,
-  devServer: {
-    static: {
-      directory: path.join(__dirname, `public`),
-      watch: true,
-    },
-    open: true,
-    historyApiFallback: true,
-  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, `public`, `index.html`),
+      filename: `index.html`,
+      inject: `body`,
+      scriptLoading: `module`
+    }),
+  ],
   module: {
     rules: [
       {
